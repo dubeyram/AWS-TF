@@ -7,17 +7,34 @@ terraform {
   }
 }
 
-
+# -------------------------------
+# Provider Configuration
+# -------------------------------
 provider "aws" {
-  region = "eu-north-1"
+  region = var.region
 }
 
+# -------------------------------
+# EC2 Instance
+# -------------------------------
 resource "aws_instance" "MyFirstInstance" {
-    ami           = "ami-04c08fd8aa14af291"
-    instance_type = "t3.nano"
-    
-    tags = {
-        Name = "MyFirstInstance"
-    }
-  
+  ami           = var.ami
+  instance_type = var.instance_type
+
+  tags = {
+    Name = "MyFirstInstance"
+  }
+}
+
+# -------------------------------
+# S3 Bucket
+# -------------------------------
+resource "aws_s3_bucket" "MyFirstBucket" {
+  bucket = "my-first-unique-bucket-1234567890" # Must be globally unique
+  acl    = "private"
+
+  tags = {
+    Name        = "MyFirstBucket"
+    Environment = "Dev"
+  }
 }
